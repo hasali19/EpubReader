@@ -106,13 +106,8 @@ internal object PackageReader {
                     "coverage" -> result.coverages!!.add(innerText)
                     "rights" -> result.rights!!.add(innerText)
                     "meta" -> {
-                        if (epubVersion == EpubVersion.EPUB_2) {
-                            val meta = readMetadataMetaVersion2(metadataItemNode)
-                            result.metaItems!!.add(meta)
-                        } else if (epubVersion == EpubVersion.EPUB_3) {
-                            val meta = readMetadataMetaVersion3(metadataItemNode)
-                            result.metaItems!!.add(meta)
-                        }
+                        val meta = readMetadataMeta(metadataItemNode)
+                        result.metaItems!!.add(meta)
                     }
                 }
             }
@@ -181,22 +176,7 @@ internal object PackageReader {
     }
 
     @JvmStatic
-    private fun readMetadataMetaVersion2(metadataMetaNode: Element): EpubMetadataMeta {
-        val result = EpubMetadataMeta()
-        val metadataMetaNodeAttributes = metadataMetaNode.attributes
-        for (i in 0 until metadataMetaNodeAttributes.length) {
-            val metadataMetaNodeAttribute = metadataMetaNodeAttributes.item(i)
-            val attributeValue = metadataMetaNodeAttribute.textContent
-            when (metadataMetaNodeAttribute.localName.toLowerCase()) {
-                "name" -> result.name = attributeValue
-                "content" -> result.content = attributeValue
-            }
-        }
-        return result
-    }
-
-    @JvmStatic
-    private fun readMetadataMetaVersion3(metadataMetaNode: Element): EpubMetadataMeta {
+    private fun readMetadataMeta(metadataMetaNode: Element): EpubMetadataMeta {
         val result = EpubMetadataMeta()
         val metadataMetaNodeAttributes = metadataMetaNode.attributes
         for (i in 0 until metadataMetaNodeAttributes.length) {
@@ -204,12 +184,16 @@ internal object PackageReader {
             val attributeValue = metadataMetaNodeAttribute.textContent
             when (metadataMetaNodeAttribute.localName.toLowerCase()) {
                 "id" -> result.id = attributeValue
+                "name" -> result.name = attributeValue
+                "content" -> result.content = attributeValue
                 "refines" -> result.refines = attributeValue
                 "property" -> result.property = attributeValue
                 "scheme" -> result.scheme = attributeValue
             }
         }
-        result.content = metadataMetaNode.textContent
+        if (result.content == null) {
+            result.content = metadataMetaNode.textContent
+        }
         return result
     }
 

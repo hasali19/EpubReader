@@ -10,7 +10,7 @@ internal object BookCoverReader {
             return null
         }
 
-        val coverMetaItem = metaItems.firstOrNull { it.name!!.equals("cover", true) }
+        val coverMetaItem = metaItems.firstOrNull { it.name.equals("cover", true) }
                 ?: return null
 
         if (coverMetaItem.content.isNullOrEmpty()) {
