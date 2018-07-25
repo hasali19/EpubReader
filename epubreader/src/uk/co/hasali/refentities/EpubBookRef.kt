@@ -3,9 +3,9 @@ package uk.co.hasali.refentities
 import uk.co.hasali.entities.EpubSchema
 import uk.co.hasali.readers.BookCoverReader
 import uk.co.hasali.readers.ChapterReader
-import java.util.zip.ZipFile
+import uk.co.hasali.zip.IZipFile
 
-class EpubBookRef(val epubFile: ZipFile) : AutoCloseable {
+class EpubBookRef(val epubFile: IZipFile) : AutoCloseable {
 
     private var isClosed: Boolean = false
 

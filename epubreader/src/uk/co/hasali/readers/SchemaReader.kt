@@ -2,11 +2,12 @@ package uk.co.hasali.readers
 
 import uk.co.hasali.entities.EpubSchema
 import uk.co.hasali.utils.ZipPathUtils
+import uk.co.hasali.zip.IZipFile
 import java.util.zip.ZipFile
 
 internal object SchemaReader {
     @JvmStatic
-    fun readSchema(epubFile: ZipFile): EpubSchema {
+    fun readSchema(epubFile: IZipFile): EpubSchema {
         val result = EpubSchema()
         val rootFilePath = RootFilePathReader.getRootFilePath(epubFile)
         val contentDirectoryPath = ZipPathUtils.getDirectoryPath(rootFilePath)

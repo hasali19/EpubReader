@@ -4,8 +4,10 @@ import uk.co.hasali.entities.*
 import uk.co.hasali.readers.ContentReader
 import uk.co.hasali.readers.SchemaReader
 import uk.co.hasali.refentities.*
+import uk.co.hasali.zip.IZipFile
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.InputStream
 import java.util.zip.ZipFile
 
 object EpubReader {
@@ -25,6 +27,11 @@ object EpubReader {
     }
 
     @JvmStatic
+    fun openBook(stream: InputStream): EpubBookRef {
+        return openBook(getZipFile(stream))
+    }
+
+    @JvmStatic
     fun readBook(filePath: String): EpubBook {
         val epubBookRef = openBook(filePath)
         return readBook(epubBookRef)
@@ -37,7 +44,13 @@ object EpubReader {
     }
 
     @JvmStatic
-    private fun openBook(zipFile: ZipFile, filePath: String): EpubBookRef {
+    fun readBook(stream: InputStream): EpubBook {
+        val epubBookRef = openBook(stream)
+        return readBook(epubBookRef)
+    }
+
+    @JvmStatic
+    private fun openBook(zipFile: IZipFile, filePath: String? = null): EpubBookRef {
         var result: EpubBookRef? = null
         return try {
             result = EpubBookRef(zipFile).apply {
@@ -77,8 +90,13 @@ object EpubReader {
     }
 
     @JvmStatic
-    private fun getZipFile(file: File): ZipFile {
-        return ZipFile(file, ZipFile.OPEN_READ)
+    private fun getZipFile(file: File): IZipFile {
+        return IZipFile.fromFile(file)
+    }
+
+    @JvmStatic
+    private fun getZipFile(stream: InputStream): IZipFile {
+        return IZipFile.fromInputStream(stream)
     }
 
     @JvmStatic

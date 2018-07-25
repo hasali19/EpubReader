@@ -5,12 +5,13 @@ import uk.co.hasali.schema.navigation.*
 import uk.co.hasali.schema.opf.EpubPackage
 import uk.co.hasali.utils.XmlUtils
 import uk.co.hasali.utils.ZipPathUtils
+import uk.co.hasali.zip.IZipFile
 import java.util.zip.ZipFile
 
 internal object NavigationReader {
 
     @JvmStatic
-    fun readNavigation(epubFile: ZipFile, contentDirectoryPath: String, epubPackage: EpubPackage): EpubNavigation {
+    fun readNavigation(epubFile: IZipFile, contentDirectoryPath: String, epubPackage: EpubPackage): EpubNavigation {
         val result = EpubNavigation()
         val tocId = epubPackage.spine?.toc
         if (tocId.isNullOrEmpty()) {
@@ -27,7 +28,7 @@ internal object NavigationReader {
             throw Exception("EPUB parsing error: TOC file $tocFileEntryPath is larger than 2 Gb.")
         }
 
-        val containerDocument = epubFile.getInputStream(tocFileEntry).use { stream ->
+        val containerDocument = tocFileEntry.getInputStream().use { stream ->
             XmlUtils.loadDocument(stream)
         }
 

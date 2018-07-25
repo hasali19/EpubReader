@@ -2,6 +2,7 @@ package uk.co.hasali.refentities
 
 import uk.co.hasali.entities.EpubContentType
 import uk.co.hasali.utils.ZipPathUtils
+import uk.co.hasali.zip.IZipEntry
 import java.io.InputStream
 import java.nio.charset.Charset
 import java.util.zip.ZipEntry
@@ -23,7 +24,7 @@ abstract class EpubContentFileRef internal constructor(private val epubBookRef: 
     val contentStream: InputStream
         get() = openContentStream(contentFileEntry)
 
-    private val contentFileEntry: ZipEntry
+    private val contentFileEntry: IZipEntry
         get() {
             val contentFilePath = ZipPathUtils.combine(epubBookRef.schema?.contentDirectoryPath, fileName)
             val contentFileEntry = epubBookRef.epubFile.getEntry(contentFilePath)
@@ -34,7 +35,7 @@ abstract class EpubContentFileRef internal constructor(private val epubBookRef: 
             return contentFileEntry
         }
 
-    private fun openContentStream(contentFileEntry: ZipEntry): InputStream {
-        return epubBookRef.epubFile.getInputStream(contentFileEntry)
+    private fun openContentStream(contentFileEntry: IZipEntry): InputStream {
+        return contentFileEntry.getInputStream()
     }
 }

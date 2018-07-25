@@ -3,6 +3,7 @@ package uk.co.hasali.readers
 import org.w3c.dom.Element
 import uk.co.hasali.schema.opf.*
 import uk.co.hasali.utils.XmlUtils
+import uk.co.hasali.zip.IZipFile
 import java.net.URL
 import java.util.zip.ZipFile
 
@@ -11,10 +12,10 @@ private const val NS_OPF = "http://www.idpf.org/2007/opf"
 internal object PackageReader {
 
     @JvmStatic
-    fun readPackage(epubFile: ZipFile, rootFilePath: String): EpubPackage {
+    fun readPackage(epubFile: IZipFile, rootFilePath: String): EpubPackage {
         val rootFileEntry = epubFile.getEntry(rootFilePath)
                 ?: throw Exception("EPUB parsing error: root file not found in archive.")
-        val containerDocument = epubFile.getInputStream(rootFileEntry).use { stream ->
+        val containerDocument = rootFileEntry.getInputStream().use { stream ->
             XmlUtils.loadDocument(stream)
         }
 
