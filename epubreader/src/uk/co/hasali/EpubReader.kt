@@ -21,7 +21,7 @@ object EpubReader {
         if (!file.exists()) {
             throw FileNotFoundException("Specified epub file not found: ${file.path}")
         }
-        return openBook(getZipFile(file))
+        return openBook(getZipFile(file), file.path)
     }
 
     @JvmStatic
@@ -37,7 +37,7 @@ object EpubReader {
     }
 
     @JvmStatic
-    private fun openBook(zipFile: ZipFile, filePath: String? = null): EpubBookRef {
+    private fun openBook(zipFile: ZipFile, filePath: String): EpubBookRef {
         var result: EpubBookRef? = null
         return try {
             result = EpubBookRef(zipFile).apply {
