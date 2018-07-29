@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/epubreader/epubreader.iml" filepath="$PROJECT_DIR$/epubreader/epubreader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/EpubReader.iml" filepath="$PROJECT_DIR$/.idea/EpubReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EpubReader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/EpubReader_main.iml" group="EpubReader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EpubReader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/EpubReader_test.iml" group="EpubReader" />
     </modules>
   </component>
 </project>
